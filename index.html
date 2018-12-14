@@ -80,7 +80,7 @@
 
 	
 	for (index=0; index<data.length; index++) { 
-		var modified = data[index].replace(/(\[.+?\])/g, "<span class=\"madlib\" contenteditable=\"true\" placeholder=\"$1\" onfocus=onfocus=\"amplitude.getInstance().logEvent('Fill In Blank Focus')\"></span>");
+		var modified = data[index].replace(/(\[.+?\])/g, "<span class=\"madlib\" contenteditable=\"true\" placeholder=\"$1\" onfocus=\"amplitude.getInstance().logEvent('Fill In Blank Focus')\"></span>");
 		var div = document.getElementById('001');
 		div.innerHTML += "<div class=\"lib\" id=\"lib"+index+'\"><p>'+modified+'</p></div>';
 	}
