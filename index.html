@@ -50,6 +50,11 @@
 		 background-color:#ffffcc;
 	  }
 	  
+	  .filledout {
+		color: black;
+	  	background-color: #e8e8ef;
+	  }
+	  
 	  [contenteditable=true]:empty:before{
 	    content: attr(placeholder);
 	  }
@@ -59,8 +64,19 @@
 		  margin-right: 15%;
 	  }
 	  
+	  .copytext {
+		  height: 30px;
+	  	display: inline;
+	  }
+	  
 	  #topinfo {
 		  border-style: solid;
+	  }
+	  
+	  .hiddentextarea {
+	  	height: 0px;
+		width: 0px;
+		opacity: 0;
 	  }
   </style>
  </head>
@@ -80,10 +96,37 @@
 
 	
 	for (index=0; index<data.length; index++) { 
-		var modified = data[index].replace(/(\[.+?\])/g, "<span class=\"madlib\" contenteditable=\"true\" placeholder=\"$1\" onfocus=\"amplitude.getInstance().logEvent('Fill In Blank Focus')\"></span>");
+		var modified = data[index].replace(/(\[.+?\])/g, "<span class=\"madlib\" contenteditable=\"true\" placeholder=\"$1\" onfocus=\"amplitude.getInstance().logEvent('Fill In Blank Focus')\" onfocusout=\"sayHello(this)\"></span>");
+		
 		var div = document.getElementById('001');
 		div.innerHTML += "<div class=\"lib\" id=\"lib"+index+'\"><p>'+modified+'</p></div>';
 	}
 	
+	function sayHello(object) {
+		libcopy = object.innerText;
+		if (libcopy.length > 0) {
+			object.classList.remove("madlib")
+			object.classList.add("filledout")
+			amplitude.getInstance().logEvent('Exited Lib After Typing');
+		}
+	}
+	
+	function copyText(libId,textareaId) {
+	  /* Get the text field */
+		
+	  var theText = document.getElementById(libId);
+	  
+	  document.getElementById(textareaId).value = theText.innerText;
+	  
+
+	  /* Select the text field */
+	  document.getElementById(textareaId).select();
+
+	  /* Copy the text inside the text field */
+	  document.execCommand("copy");
+
+	  /* Alert the copied text */
+	  //alert(theText.innerText);
+	}
 
 </script>
